@@ -503,6 +503,8 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
             String sectionName = info.sectionName;
             // Create a new section if the section names do not match
             if (!sectionName.equals(lastSectionName)) {
+                /* LC-Feature: Call to hook that triggers new sections in the drawer */
+                position = onNewSection(sectionName, lastSectionName, position, hasPrivateApps);
                 Log.d(TAG, "addAppsWithSections: adding sectionName: " + sectionName
                     + " with appInfoTitle: " + info.title);
                 lastSectionName = sectionName;
@@ -514,6 +516,15 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
             }
             position++;
         }
+        return position;
+    }
+
+    /* LC-Feature: Adding hook that triggers after an app of a new section has been added */
+    protected int onNewSection(
+            String sectionName,
+            String previousSectionName,
+            int position,
+            boolean hasPrivateApps) {
         return position;
     }
 

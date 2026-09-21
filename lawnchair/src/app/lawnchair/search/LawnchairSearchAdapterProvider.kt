@@ -37,6 +37,7 @@ class LawnchairSearchAdapterProvider(
         append(SEARCH_RESULT_CALCULATOR, R.layout.search_result_tall_icon_row_calculator)
         append(SEARCH_RESULT_EMPTY_STATE, R.layout.search_result_empty_state)
         append(SEARCH_RESULT_SEARCH_SETTINGS, R.layout.search_result_search_settings)
+        append(BaseAllAppsAdapter.VIEW_TYPE_SECTION_BREAK, R.layout.all_apps_section_break)
     }
     private var quickLaunchItem: SearchResultView? = null
         set(value) {
@@ -52,6 +53,11 @@ class LawnchairSearchAdapterProvider(
     override fun isViewSupported(viewType: Int): Boolean = layoutIdMap.contains(viewType)
 
     override fun onBindView(holder: BaseAllAppsAdapter.ViewHolder, position: Int) {
+        // Early abort if the view type is for the Section Break in the app drawer
+        if (holder.itemViewType == BaseAllAppsAdapter.VIEW_TYPE_SECTION_BREAK) {
+            return
+        }
+
         val adapterItem = appsView.mSearchRecyclerView.mApps.adapterItems[position] as SearchAdapterItem
         adapterItem.setRippleEffect(holder.itemView)
         val itemView = holder.itemView as SearchResultView

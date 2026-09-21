@@ -70,13 +70,17 @@ public abstract class BaseAllAppsAdapter<T extends Context & ActivityContext> ex
     public static final int VIEW_TYPE_PRIVATE_SPACE_HEADER = 1 << 6;
     public static final int VIEW_TYPE_PRIVATE_SPACE_SYS_APPS_DIVIDER = 1 << 7;
     public static final int VIEW_TYPE_BOTTOM_VIEW_TO_SCROLL_TO = 1 << 8;
+    // LC-Feature: The break between letters in the drawer
+    public static final int VIEW_TYPE_SECTION_BREAK = 1 << 23;
     public static final int NEXT_ID = 9;
 
     // LC-Feature: Folder support in All Apps, can be any ID
     public static final int VIEW_TYPE_FOLDER = 1 << 10;
 
+    // LC-Feature: Added VIEW_TYPE_SECTION_BREAK as possible divider
     // Common view type masks
-    public static final int VIEW_TYPE_MASK_DIVIDER = VIEW_TYPE_ALL_APPS_DIVIDER;
+    public static final int VIEW_TYPE_MASK_DIVIDER =
+            VIEW_TYPE_ALL_APPS_DIVIDER | VIEW_TYPE_SECTION_BREAK;
     public static final int VIEW_TYPE_MASK_ICON = VIEW_TYPE_FOLDER | VIEW_TYPE_ICON;
 
     public static final int VIEW_TYPE_MASK_PRIVATE_SPACE_HEADER =

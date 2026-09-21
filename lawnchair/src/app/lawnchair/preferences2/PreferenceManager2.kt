@@ -704,6 +704,11 @@ class PreferenceManager2 @Inject constructor(
         onSet = { reloadHelper.reloadGrid() },
     )
 
+    val drawerLetterRowBreaks = preference(
+        key = booleanPreferencesKey("app_drawer_letter_row_breaks"),
+        defaultValue = false,
+    )
+
     val folderColumns = idpPreference(
         key = intPreferencesKey(name = "folder_columns"),
         defaultSelector = { numFolderColumns[INDEX_DEFAULT] },
