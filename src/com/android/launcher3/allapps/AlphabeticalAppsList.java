@@ -503,6 +503,7 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
             String sectionName = info.sectionName;
             // Create a new section if the section names do not match
             if (!sectionName.equals(lastSectionName)) {
+                position = onNewSection(sectionName, lastSectionName, position);
                 Log.d(TAG, "addAppsWithSections: adding sectionName: " + sectionName
                     + " with appInfoTitle: " + info.title);
                 lastSectionName = sectionName;
@@ -514,6 +515,13 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
             }
             position++;
         }
+        return position;
+    }
+
+    protected int onNewSection(
+        String sectionName,
+        String previousSectionName,
+        int position) {
         return position;
     }
 

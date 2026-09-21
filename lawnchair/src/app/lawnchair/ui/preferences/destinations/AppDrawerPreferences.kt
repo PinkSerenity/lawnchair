@@ -166,6 +166,10 @@ fun AppDrawerPreferences(
                 step = 0.05F,
                 showAsPercentage = true,
             )
+            SwitchPreference(
+                adapter = prefs2.drawerLetterRowBreaks.getAdapter(),
+                label = stringResource(R.string.app_drawer_letter_row_breaks),
+            )
         }
         val showDrawerLabels = prefs2.showIconLabelsInDrawer.getAdapter()
         PreferenceGroup(heading = stringResource(id = R.string.icons)) {

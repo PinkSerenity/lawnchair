@@ -39,6 +39,7 @@ class LawnchairAlphabeticalAppsList<T>(
     where T : Context, T : ActivityContext {
 
     private var hiddenApps: Set<String> = setOf()
+    private var drawerLetterRowBreaks: Boolean = false
     private val prefs2 = PreferenceManager2.getInstance(context)
     private val prefs = PreferenceManager.getInstance(context)
 
@@ -58,6 +59,15 @@ class LawnchairAlphabeticalAppsList<T>(
             }
         } catch (t: Throwable) {
             Log.w(TAG, "Failed to initialize hidden apps", t)
+        }
+
+        try {
+            prefs2.drawerLetterRowBreaks.onEach(launchIn = context.launcher.lifecycleScope) {
+                drawerLetterRowBreaks = it
+                onAppsUpdated()
+            }
+        } catch (t: Throwable) {
+            Log.w(TAG, "Failed to initialize row breaks", t)
         }
         observeFolders()
     }
@@ -133,6 +143,25 @@ class LawnchairAlphabeticalAppsList<T>(
             }
             val remainingApps = appList.filterNot { app -> filteredList.contains(app) && prefs.folderApps.get() }
             position = super.addAppsWithSections(remainingApps, position)
+        }
+
+        return position
+    }
+
+    override fun onNewSection(
+        sectionName: String,
+        previousSectionName: String?,
+        position: Int,
+    ): Int {
+        if (
+            position > 0 &&
+            drawerLetterRowBreaks
+        ) {
+            // Insert break before new section
+            mAdapterItems.add(
+                mAdapterItems.size - 1,
+                AdapterItem.asSectionBreak())
+            return position + 1
         }
 
         return position

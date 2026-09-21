@@ -881,6 +881,8 @@
     <string name="app_drawer_bg_color_label">Background color</string>
     <string name="work_profile_tab_background_label">Tab background color</string>
 
+    <string name="app_drawer_letter_row_breaks">Start each letter on a new row</string>
+
     <string name="pref_all_apps_search_bar_background">Show background behind search bar</string>
     <string name="work_profile_tab_container_background_label">Show background behind tabs</string>
 
