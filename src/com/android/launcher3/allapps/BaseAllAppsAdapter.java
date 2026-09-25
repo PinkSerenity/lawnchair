@@ -374,6 +374,12 @@ public abstract class BaseAllAppsAdapter<T extends Context & ActivityContext> ex
             case VIEW_TYPE_WORK_EDU_CARD:
                 ((WorkEduCard) holder.itemView).setPosition(position);
                 break;
+            case VIEW_TYPE_SECTION_BREAK:
+                RecyclerView.LayoutParams lp =
+                    (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+                lp.height = mApps.getSectionBreakHeight();
+                holder.itemView.setLayoutParams(lp);
+                break;
             case VIEW_TYPE_FOLDER:
                 // LC: Caddy/Folder in allapps 86b2b025a4f23a068818274020f37ad6d5268363
                 FolderInfo folderInfo = mApps.getAdapterItems().get(position).folderInfo;

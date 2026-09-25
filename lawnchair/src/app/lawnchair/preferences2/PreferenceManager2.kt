@@ -709,6 +709,11 @@ class PreferenceManager2 @Inject constructor(
         defaultValue = false,
     )
 
+    val drawerSectionGap = preference(
+        key = floatPreferencesKey("app_drawer_section_gap"),
+        defaultValue = resourceProvider.getFloat(R.dimen.config_default_drawer_padding_top),
+    )
+
     val folderColumns = idpPreference(
         key = intPreferencesKey(name = "folder_columns"),
         defaultSelector = { numFolderColumns[INDEX_DEFAULT] },

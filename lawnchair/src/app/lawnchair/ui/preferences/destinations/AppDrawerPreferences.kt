@@ -170,6 +170,17 @@ fun AppDrawerPreferences(
                 adapter = prefs2.drawerLetterRowBreaks.getAdapter(),
                 label = stringResource(R.string.app_drawer_letter_row_breaks),
             )
+            ExpandAndShrink(
+                visible = prefs2.drawerLetterRowBreaks.getAdapter().state.value
+            ) {
+                SliderPreference(
+                    adapter = prefs2.drawerSectionGap.getAdapter(),
+                    label = stringResource(id = R.string.app_drawer_section_gap),
+                    valueRange = 1.0F..2.0F,
+                    step = 0.05F,
+                    showAsPercentage = true,
+                )
+            }
         }
         val showDrawerLabels = prefs2.showIconLabelsInDrawer.getAdapter()
         PreferenceGroup(heading = stringResource(id = R.string.icons)) {

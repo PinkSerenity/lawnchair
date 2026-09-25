@@ -161,6 +161,20 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
     }
 
     /**
+     * Informs the adapter of changes to items by index with optional payload
+     */
+    protected void notifyItemChanged(int index) {
+        if (mAdapter != null) {
+            mAdapter.notifyItemChanged(index);
+        }
+    }
+    protected void notifyItemChanged(int index, @Nullable Object payload) {
+        if (mAdapter != null) {
+            mAdapter.notifyItemChanged(index, payload);
+        }
+    }
+
+    /**
      * Returns fast scroller sections of all the current filtered applications.
      */
     public List<FastScrollSectionInfo> getFastScrollerSections() {
@@ -523,6 +537,10 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
         String previousSectionName,
         int position) {
         return position;
+    }
+
+    protected int getSectionBreakHeight() {
+        return 0;
     }
 
 

@@ -11,11 +11,13 @@ import app.lawnchair.data.folder.model.FolderViewModel
 import app.lawnchair.launcher
 import app.lawnchair.preferences.PreferenceManager
 import app.lawnchair.preferences2.PreferenceManager2
+import app.lawnchair.preferences2.firstCached
 import app.lawnchair.util.categorizeAppsWithSystemAndGoogle
 import app.lawnchair.util.observeOnce
 import com.android.launcher3.InvariantDeviceProfile.OnIDPChangeListener
 import com.android.launcher3.allapps.AllAppsStore
 import com.android.launcher3.allapps.AlphabeticalAppsList
+import com.android.launcher3.allapps.BaseAllAppsAdapter
 import com.android.launcher3.allapps.BaseAllAppsAdapter.AdapterItem
 import com.android.launcher3.allapps.PrivateProfileManager
 import com.android.launcher3.allapps.WorkProfileManager
@@ -26,6 +28,7 @@ import com.android.launcher3.util.ComponentKey
 import com.android.launcher3.views.ActivityContext
 import com.patrykmichalik.opto.core.onEach
 import java.util.function.Predicate
+import kotlin.math.roundToInt
 
 @Suppress("SYNTHETIC_PROPERTY_WITHOUT_JAVA_ORIGIN")
 class LawnchairAlphabeticalAppsList<T>(
@@ -65,6 +68,9 @@ class LawnchairAlphabeticalAppsList<T>(
             prefs2.drawerLetterRowBreaks.onEach(launchIn = context.launcher.lifecycleScope) {
                 drawerLetterRowBreaks = it
                 onAppsUpdated()
+            }
+            prefs2.drawerSectionGap.onEach(launchIn = context.launcher.lifecycleScope) {
+                notifySectionGapsChanged()
             }
         } catch (t: Throwable) {
             Log.w(TAG, "Failed to initialize row breaks", t)
@@ -165,6 +171,21 @@ class LawnchairAlphabeticalAppsList<T>(
         }
 
         return position
+    }
+
+    override fun getSectionBreakHeight(): Int {
+        val rowHeight = context.deviceProfile.allAppsProfile.cellHeightPx
+        val multiplier = prefs2.drawerSectionGap.firstCached()
+
+        return (rowHeight * (multiplier - 1f)).roundToInt()
+    }
+
+    protected fun notifySectionGapsChanged() {
+        for (i in mAdapterItems.indices) {
+            if (mAdapterItems[i].viewType == BaseAllAppsAdapter.VIEW_TYPE_SECTION_BREAK) {
+                notifyItemChanged(i)
+            }
+        }
     }
 
     override fun onIdpChanged(modelPropertiesChanged: Boolean) {
