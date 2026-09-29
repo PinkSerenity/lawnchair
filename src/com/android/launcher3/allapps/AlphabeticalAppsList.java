@@ -161,6 +161,15 @@ public class AlphabeticalAppsList<T extends Context & ActivityContext> implement
     }
 
     /**
+     * LC-Note: Informs the adapter of changes to items by index
+     */
+    protected void notifyItemChanged(int index) {
+        if (mAdapter != null) {
+            mAdapter.notifyItemChanged(index);
+        }
+    }
+
+    /**
      * Returns fast scroller sections of all the current filtered applications.
      */
     public List<FastScrollSectionInfo> getFastScrollerSections() {

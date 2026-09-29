@@ -67,6 +67,9 @@ class LawnchairAlphabeticalAppsList<T>(
                 drawerLetterRowBreaks = it
                 onAppsUpdated()
             }
+            prefs2.drawerSectionGap.onEach(launchIn = context.launcher.lifecycleScope) {
+                notifySectionGapsChanged()
+            }
         } catch (t: Throwable) {
             Log.w(TAG, "Failed to initialize row breaks", t)
         }
@@ -169,6 +172,14 @@ class LawnchairAlphabeticalAppsList<T>(
         }
 
         return position
+    }
+
+    private fun notifySectionGapsChanged() {
+        for (i in mAdapterItems.indices) {
+            if (mAdapterItems[i].viewType == BaseAllAppsAdapter.VIEW_TYPE_SECTION_BREAK) {
+                notifyItemChanged(i)
+            }
+        }
     }
 
     override fun onIdpChanged(modelPropertiesChanged: Boolean) {

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.util.contains
 import app.lawnchair.allapps.views.SearchItemDecorator
 import app.lawnchair.allapps.views.SearchResultView
+import app.lawnchair.preferences2.PreferenceManager2
+import app.lawnchair.preferences2.firstCached
 import app.lawnchair.search.adapter.SearchAdapterItem
 import com.android.app.search.LayoutType
 import com.android.launcher3.DeviceProfile
@@ -16,6 +18,7 @@ import com.android.launcher3.allapps.AllAppsGridAdapter
 import com.android.launcher3.allapps.BaseAllAppsAdapter
 import com.android.launcher3.allapps.search.DefaultSearchAdapterProvider
 import com.android.launcher3.views.ActivityContext
+import kotlin.math.roundToInt
 
 class LawnchairSearchAdapterProvider(
     launcher: ActivityContext,
@@ -23,6 +26,7 @@ class LawnchairSearchAdapterProvider(
 ) : DefaultSearchAdapterProvider(launcher) {
 
     private val decorator = SearchItemDecorator(appsView)
+    private val prefs2 = PreferenceManager2.getInstance(appsView.context)
     private val layoutIdMap = SparseIntArray().apply {
         append(SEARCH_RESULT_ICON, R.layout.search_result_icon)
         append(SEARCH_RESULT_ICON_ROW, R.layout.search_result_tall_icon_row)
@@ -53,8 +57,15 @@ class LawnchairSearchAdapterProvider(
     override fun isViewSupported(viewType: Int): Boolean = layoutIdMap.contains(viewType)
 
     override fun onBindView(holder: BaseAllAppsAdapter.ViewHolder, position: Int) {
-        // Early abort if the view type is for the Section Break in the app drawer
+        // Early binding if the view type is for the Section Break in the app drawer
         if (holder.itemViewType == BaseAllAppsAdapter.VIEW_TYPE_SECTION_BREAK) {
+            val layoutParams = holder.itemView.layoutParams
+
+            val rowHeight = mLauncher.deviceProfile.allAppsProfile.cellHeightPx
+            val multiplier = prefs2.drawerSectionGap.firstCached()
+
+            layoutParams.height = (rowHeight * (multiplier - 1f)).roundToInt()
+            holder.itemView.layoutParams = layoutParams
             return
         }
 
